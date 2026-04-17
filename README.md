@@ -1,104 +1,82 @@
 # dude
 
-**dude** is a secure, single-binary CLI utility that helps you **identify, preview, and safely remove orphaned packages** from your Arch Linux system. Featuring a colorized TUI and a safety-first workflow, dude is designed for maintainability and ease of use.
+`dude` finds and removes orphan packages on Arch Linux.
 
-[![TUI Example](https://i.postimg.cc/C1ZjbBYp/image.png)](https://postimg.cc/5YVYVt6s)
+It is a small wrapper around `pacman` with a TUI, a dry-run-friendly CLI, and a safer default workflow than pasting package lists into shell one-liners.
 
----
+![dude TUI screenshot](assets/dude-tui.png)
 
 ## Installation
 
-### AUR (Arch User Repository)
+### AUR
 
 ```bash
 yay -S dude
 ```
 
-### Build from Source
+### From source
 
 ```bash
-git clone https://github.com/seeyebe/dude
+git clone https://github.com/marawny/dude
 cd dude
 cargo build --release
-sudo cp target/release/dude /usr/local/bin/
+sudo install -Dm755 target/release/dude /usr/local/bin/dude
 ```
-
----
 
 ## Usage
 
-### Interactive Mode (TUI)
-
-```bash
-dude
-```
-
-or explicitly:
-
-```bash
-dude tui
-```
-
-* Use arrow keys to navigate
-* Press `Space` to toggle selections
-* Press `Enter` to confirm and remove selected packages
-
-### List Orphans
+List orphan packages:
 
 ```bash
 dude list
 ```
 
-### Prune Orphans
+Open the interactive TUI:
 
-Dry run (default):
+```bash
+dude
+```
+
+Preview removal:
 
 ```bash
 dude prune
 ```
 
-Remove without confirmation:
+Remove all detected orphans:
 
 ```bash
 dude prune --yes
 ```
 
-Force dry run:
+Keep packages matching a regex for one run:
 
 ```bash
-dude prune --dry
+dude --keep '^linux.*' prune
 ```
 
----
+## Commands
 
-## Global Options
-
-```bash
-# Preserve packages matching pattern
-dude --keep "^lib.*-dev$" prune
-
-# Skip config file backup
-dude --nosave prune --yes
-
-# Quiet mode (e.g., for pacman hooks)
-dude --hook list
+```text
+dude list
+dude tui
+dude prune [--yes] [--dry]
+dude auto
 ```
-
----
 
 ## Configuration
 
-Create a global or user-specific configuration file at:
+Config files are loaded from:
 
-* `/etc/dude.conf`
-* `~/.config/dude/config`
+- `/etc/dude.conf`
+- `~/.config/dude/config`
 
 Example:
 
 ```toml
 whitelist = [
-    "base-devel",
-    "linux-headers"
+  "base-devel",
+  "linux-headers",
 ]
 
 [auto_prune]
@@ -106,20 +84,31 @@ threshold_mb = 100
 days_since_last_run = 7
 ```
 
----
+## Pacman hook
 
-## Pacman Hook Integration
-
-To receive orphan notifications after system updates, install the hook:
+Install the bundled hook to list new orphans after upgrades:
 
 ```bash
 sudo cp hooks/dude.hook /usr/share/libalpm/hooks/
 ```
 
----
+## Notes
+
+- `dude` targets Arch Linux and shells out to `pacman`.
+- Orphan detection follows `pacman -Qdttq`.
+- The default `prune` flow is non-destructive unless you pass `--yes`.
+
+## Development
+
+```bash
+cargo fmt --check
+cargo test
+cargo clippy --all-targets --all-features -- -D warnings
+```
 
 ## License
 
-dude is dual-licensed under the **Apache 2.0** or **MIT** license.
+Licensed under either of:
 
-You may choose either license for your use case.
+- MIT
+- Apache-2.0

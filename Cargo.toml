@@ -2,15 +2,14 @@
 name = "dude"
 version = "0.1.1"
 edition = "2021"
-authors = ["seeyebe"]
-description = "A single-binary helper that discovers, previews and removes pacman orphans"
+authors = ["marawny"]
+description = "Safe orphan package cleanup for Arch Linux with preview mode and a terminal UI"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/seeyebe/dude"
+repository = "https://github.com/marawny/dude"
 keywords = ["pacman", "arch-linux", "orphans", "package-manager"]
 categories = ["command-line-utilities"]
 
 [dependencies]
-alpm = "4.0"
 clap = { version = "4.0", features = ["derive"] }
 crossterm = "0.27"
 ratatui = "0.29"

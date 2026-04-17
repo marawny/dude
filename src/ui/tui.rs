@@ -121,7 +121,11 @@ impl TuiApp {
             .collect();
 
         let list = List::new(items)
-            .block(Block::default().borders(Borders::ALL).title("Orphan Packages"))
+            .block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title("Orphan Packages"),
+            )
             .highlight_style(Style::default().add_modifier(Modifier::REVERSED));
 
         f.render_stateful_widget(list, chunks[0], &mut self.list_state);

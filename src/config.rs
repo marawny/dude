@@ -48,16 +48,25 @@ impl Config {
     }
 
     pub fn filter_whitelist(&self, pkgs: &[Package]) -> Vec<Package> {
-        pkgs.iter().filter(|p| !self.whitelist.contains(&p.name)).cloned().collect()
+        pkgs.iter()
+            .filter(|p| !self.whitelist.contains(&p.name))
+            .cloned()
+            .collect()
     }
 
     pub fn filter_keep_pattern(&self, pkgs: &[Package], pat: &str) -> Result<Vec<Package>> {
         let re = Regex::new(pat)?;
-        Ok(pkgs.iter().filter(|p| !re.is_match(&p.name)).cloned().collect())
+        Ok(pkgs
+            .iter()
+            .filter(|p| !re.is_match(&p.name))
+            .cloned()
+            .collect())
     }
 
     pub fn should_auto_prune(&self, pkgs: &[Package]) -> bool {
-        let Some(cfg) = &self.auto_prune else { return false };
+        let Some(cfg) = &self.auto_prune else {
+            return false;
+        };
         let total_mb: f64 = pkgs.iter().map(|p| p.size).sum::<u64>() as f64 / 1_048_576.0;
         if total_mb < cfg.threshold_mb as f64 {
             return false;

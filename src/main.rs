@@ -1,5 +1,4 @@
 use anyhow::Result;
-use atty;
 use clap::{Parser, Subcommand};
 use std::process;
 
@@ -13,7 +12,7 @@ use crate::ui::tui::TuiApp;
 
 #[derive(Parser)]
 #[command(name = "dude")]
-#[command(about = "A single-binary helper that discovers, previews and removes pacman orphans")]
+#[command(about = "Find and remove orphan packages on Arch Linux")]
 #[command(version)]
 struct Cli {
     #[command(subcommand)]

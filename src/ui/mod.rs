@@ -10,8 +10,11 @@ pub fn confirm_removal(packages: &[Package]) -> Result<bool> {
     let total_size: u64 = packages.iter().map(|p| p.size).sum();
     let total_mb = total_size as f64 / 1_048_576.0;
 
-    println!("\nAbout to remove {} packages, freeing {:.1} MiB",
-             packages.len(), total_mb);
+    println!(
+        "\nAbout to remove {} packages, freeing {:.1} MiB",
+        packages.len(),
+        total_mb
+    );
     print!("Continue? [y/N]: ");
     io::stdout().flush()?;
 
