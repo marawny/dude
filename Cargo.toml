@@ -1,6 +1,6 @@
 [package]
 name = "dude"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["marawny"]
 description = "Safe orphan package cleanup for Arch Linux with preview mode and a terminal UI"
