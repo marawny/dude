@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Context, Result};
+use std::cmp::Reverse;
 use std::process::{Command, Output};
 
 use crate::core::model::Package;
@@ -18,7 +19,7 @@ impl AlpmContext {
             .map(|name| load_package(&name))
             .collect::<Result<Vec<_>>>()?;
 
-        orphans.sort_by(|a, b| b.size.cmp(&a.size));
+        orphans.sort_by_key(|pkg| Reverse(pkg.size));
         Ok(orphans)
     }
 }

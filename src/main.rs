@@ -1,5 +1,6 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
+use std::io::IsTerminal;
 use std::process;
 
 mod config;
@@ -81,7 +82,7 @@ fn run(cli: Cli) -> Result<()> {
             }
         }
         Some(Commands::Prune { yes, dry }) => {
-            if dry || (!yes && !atty::is(atty::Stream::Stdout)) {
+            if dry || (!yes && !std::io::stdout().is_terminal()) {
                 ui::list::show_orphans(&orphans);
                 println!("\nDry run – no packages removed.");
             } else if yes {

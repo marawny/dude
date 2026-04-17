@@ -77,11 +77,7 @@ impl TuiApp {
                         self.should_quit = true;
                         break;
                     }
-                    KeyCode::Enter => {
-                        if self.selected.iter().any(|&x| x) {
-                            break;
-                        }
-                    }
+                    KeyCode::Enter if self.selected.iter().any(|&x| x) => break,
                     KeyCode::Up => self.previous(),
                     KeyCode::Down => self.next(),
                     KeyCode::Char(' ') => self.toggle_selection(),
